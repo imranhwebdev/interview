@@ -118,24 +118,60 @@
     </div>
   </div>
 
-  <script>
-    const toggle = document.querySelector('.menu-toggle');
-    const menu = document.querySelector('.main-menu');
-    toggle.addEventListener('click', () => {
-      menu.classList.toggle('show');
-    });
+<script>
+const toggle = document.querySelector('.menu-toggle');
+const menu = document.querySelector('.main-menu');
 
-    document.querySelectorAll('.main-menu li > a').forEach(link => {
-      link.addEventListener('click', e => {
-        if (window.innerWidth <= 768) {
-          const nextEl = link.nextElementSibling;
-          if (nextEl && nextEl.tagName === 'UL') {
-            e.preventDefault();
-            nextEl.classList.toggle('show-submenu');
-          }
-        }
-      });
+// Hamburger toggle
+toggle.addEventListener('click', () => {
+  menu.classList.toggle('show');
+});
+
+// Close sibling submenus
+function closeSiblings(ul, exclude) {
+  ul.querySelectorAll(':scope > li > ul').forEach(sub => {
+    if (sub !== exclude) {
+      sub.style.height = '0px';
+      sub.classList.remove('show-submenu');
+    }
+  });
+}
+
+// Click-only submenu toggle
+document.querySelectorAll('.main-menu li > a').forEach(link => {
+  link.addEventListener('click', e => {
+    const nextEl = link.nextElementSibling;
+
+    // Only apply on mobile with nested submenu
+    if (window.innerWidth <= 768 && nextEl && nextEl.tagName === 'UL') {
+      e.preventDefault();
+
+      const parentUl = link.closest('ul');
+      closeSiblings(parentUl, nextEl);
+
+      // Toggle current submenu
+      if (nextEl.style.height && nextEl.style.height !== '0px') {
+        nextEl.style.height = '0px';
+        nextEl.classList.remove('show-submenu');
+      } else {
+        nextEl.style.height = nextEl.scrollHeight + 'px';
+        nextEl.classList.add('show-submenu');
+      }
+    }
+  });
+});
+
+// Reset submenus on resize
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768) {
+    document.querySelectorAll('.main-menu ul ul').forEach(ul => {
+      ul.style.height = null;
+      ul.classList.remove('show-submenu');
     });
-  </script>
+  }
+});
+
+</script>
+
 </body>
 </html>
