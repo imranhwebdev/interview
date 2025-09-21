@@ -94,9 +94,9 @@
 }
 .main-menu ul li a {
   display: block;
-  font-weight: normal;
+  font-weight: 500;
   position: relative;
-  transition: color 0.3s ease;
+  transition: 0.3s ease-in-out;
   font-family: 'Myriad Pro', sans-serif;
   text-transform: uppercase;  
   font-size: 13px;
@@ -120,6 +120,7 @@
 }
 .main-menu ul li a:hover {
   color: #333333;
+  font-weight: bold;
 }
 .main-menu ul li a:hover::after {
   width: 100%;
@@ -389,6 +390,7 @@ form {
     padding: 12px 30px; 
     font-size: 12px;
     color: #666;
+    text-align: left;
   }
   
   .main-menu ul ul ul {
@@ -398,6 +400,11 @@ form {
   .main-menu ul ul ul li a {
     padding: 10px 45px; 
     font-size: 11px;
+    text-align: left;
+  }
+  .main-menu > ul > li > ul {
+    transform: translateX(0%);
+    left: 0;
   }
 
   /* Breadcrumb */
