@@ -36,11 +36,11 @@
                 <ul>
                     <li><a href="#">Title 1</a></li>
                     <li>
-                    <a href="#">Title 2 ▾</a>
+                    <a href="#" class="has-dropdown">Title 2 ▾</a>
                     <ul>
                         <li><a href="#">Submenu 1</a></li>
                         <li>
-                        <a href="#">Submenu 2 ▸</a>
+                        <a href="#" class="has-dropdown">Submenu 2 ▸</a>
                         <ul>
                             <li><a href="#">Submenu 2.1</a></li>
                             <li><a href="#">Submenu 2.2</a></li>
@@ -123,54 +123,64 @@ const toggle = document.querySelector('.menu-toggle');
 const menu = document.querySelector('.main-menu');
 
 // Hamburger toggle
-toggle.addEventListener('click', () => {
+toggle.addEventListener('click', (e) => {
+  e.stopPropagation();
   menu.classList.toggle('show');
 });
 
-// Close sibling submenus
-function closeSiblings(ul, exclude) {
-  ul.querySelectorAll(':scope > li > ul').forEach(sub => {
-    if (sub !== exclude) {
-      sub.style.height = '0px';
-      sub.classList.remove('show-submenu');
-    }
-  });
-}
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+  if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+    menu.classList.remove('show');
+    // Close all submenus
+    document.querySelectorAll('.main-menu ul ul').forEach(submenu => {
+      submenu.classList.remove('show-submenu');
+    });
+  }
+});
 
-// Click-only submenu toggle
-document.querySelectorAll('.main-menu li > a').forEach(link => {
-  link.addEventListener('click', e => {
-    const nextEl = link.nextElementSibling;
-
-    // Only apply on mobile with nested submenu
-    if (window.innerWidth <= 768 && nextEl && nextEl.tagName === 'UL') {
+// Mobile dropdown functionality
+document.querySelectorAll('.main-menu a.has-dropdown').forEach(link => {
+  link.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768) {
       e.preventDefault();
-
+      
+      const submenu = link.nextElementSibling;
+      const isCurrentlyOpen = submenu.classList.contains('show-submenu');
+      
+      // Close all submenus at the same level
       const parentUl = link.closest('ul');
-      closeSiblings(parentUl, nextEl);
-
+      parentUl.querySelectorAll(':scope > li > ul.show-submenu').forEach(otherSubmenu => {
+        if (otherSubmenu !== submenu) {
+          otherSubmenu.classList.remove('show-submenu');
+        }
+      });
+      
       // Toggle current submenu
-      if (nextEl.style.height && nextEl.style.height !== '0px') {
-        nextEl.style.height = '0px';
-        nextEl.classList.remove('show-submenu');
+      if (isCurrentlyOpen) {
+        submenu.classList.remove('show-submenu');
       } else {
-        nextEl.style.height = nextEl.scrollHeight + 'px';
-        nextEl.classList.add('show-submenu');
+        submenu.classList.add('show-submenu');
       }
     }
   });
 });
 
-// Reset submenus on resize
+// Reset on window resize
 window.addEventListener('resize', () => {
   if (window.innerWidth > 768) {
-    document.querySelectorAll('.main-menu ul ul').forEach(ul => {
-      ul.style.height = null;
-      ul.classList.remove('show-submenu');
+    menu.classList.remove('show');
+    document.querySelectorAll('.main-menu ul ul').forEach(submenu => {
+      submenu.classList.remove('show-submenu');
     });
   }
 });
 
+// Form validation
+document.querySelector('form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  alert('Form submitted successfully!');
+});
 </script>
 
 </body>
