@@ -110,12 +110,13 @@
   left: 0;
   bottom: 15px;
   width: 0%;
-  height: 2px;
+  height: 3px;
   background: #FF6200;
   transition: width 0.3s ease;
 }
 .main-menu ul li ul a::after {
   bottom: 0 !important;
+  height: 2px;
 }
 .main-menu ul li a:hover {
   color: #333333;
@@ -154,6 +155,7 @@
   font-weight: normal;
   font-family: "Open Sans", sans-serif;
   letter-spacing: normal;
+  text-align: center;
 }
 
 
