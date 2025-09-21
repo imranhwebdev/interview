@@ -54,12 +54,12 @@
 }
 
 .header-left span {
-  margin-right: 15px;
+  margin-right: 26px;
   color: #be3600;
 }
 
 .header-right a {
-  margin-left: 20px;
+  margin-left: 35px;
 }
 
 .header-bottom {
@@ -357,7 +357,7 @@ form {
     border-bottom: 1px solid #eee;
   }
   .main-menu ul li a {
-    padding: 15px;
+    padding: 16px;
     display: block;
     border-bottom: none; 
   }
@@ -446,4 +446,11 @@ form {
   .main {
     padding-bottom: 50px;
   }
+
+.header-left span {
+  margin-right: 15px;
+}
+.header-right a {
+    margin-left: 15px;
+}
 }
